@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Connexion — Le Super Quizz</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#0f1420;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}
+  form{background:#1a2133;padding:32px 36px;border-radius:12px;border:1px solid #2a3348;width:280px;}
+  h1{font-size:18px;margin:0 0 20px;}
+  label{display:block;font-size:13px;margin-bottom:4px;color:#9aa4bb;}
+  input{width:100%;padding:9px 10px;margin-bottom:14px;border-radius:6px;border:1px solid #2a3348;background:#0f1420;color:#eee;box-sizing:border-box;}
+  button{width:100%;padding:10px;border:none;border-radius:6px;background:#d4af37;color:#1a1200;font-weight:700;cursor:pointer;}
+  .error{color:#ff6b6b;font-size:13px;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<form method="POST" action="/login">
+  <h1>Connexion admin</h1>
+  <div class="error" id="err" style="display:none;">Identifiants incorrects.</div>
+  <label>Nom d'utilisateur</label>
+  <input type="text" name="username" autocomplete="username" required>
+  <label>Mot de passe</label>
+  <input type="password" name="password" autocomplete="current-password" required>
+  <button type="submit">Se connecter</button>
+</form>
+<script>
+  if (new URLSearchParams(location.search).get('error')) {
+    document.getElementById('err').style.display = 'block';
+  }
+</script>
+</body>
+</html>

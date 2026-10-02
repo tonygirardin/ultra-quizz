@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Admin — Le Super Quizz</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#0f1420;color:#eee;padding:24px;}
+  button{padding:8px 16px;border:none;border-radius:6px;background:#d4af37;color:#1a1200;font-weight:700;cursor:pointer;margin-right:8px;}
+  #status{font-weight:700;}
+  #status.ok{color:#4ade80;}
+  #status.ko{color:#ff6b6b;}
+  input{padding:8px;border-radius:6px;border:1px solid #2a3348;background:#1a2133;color:#eee;}
+</style>
+</head>
+<body>
+<h1>Panneau admin (socle de test)</h1>
+<p>Connexion WebSocket : <span id="status">...</span></p>
+<input type="text" id="msgInput" value="Bonjour viewers !" style="width:260px;">
+<button id="sendBtn">Envoyer aux viewers</button>
+<button id="logoutBtn">Déconnexion</button>
+<p style="color:#9aa4bb;font-size:13px;margin-top:20px;">Ceci est un socle de test : le vrai jeu (panneau de contrôle complet) sera branché ici à l'étape suivante.</p>
+
+<script>
+  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const ws = new WebSocket(proto + '//' + location.host + '/ws/admin');
+  const statusEl = document.getElementById('status');
+  ws.onopen = () => { statusEl.textContent = 'connecté'; statusEl.className = 'ok'; };
+  ws.onclose = () => { statusEl.textContent = 'déconnecté'; statusEl.className = 'ko'; };
+  ws.onerror = () => { statusEl.textContent = 'erreur'; statusEl.className = 'ko'; };
+
+  document.getElementById('sendBtn').onclick = () => {
+    ws.send(JSON.stringify({ type: 'test', text: document.getElementById('msgInput').value, ts: Date.now() }));
+  };
+  document.getElementById('logoutBtn').onclick = () => {
+    fetch('/logout', { method: 'POST' }).then(() => location.href = '/login');
+  };
+</script>
+</body>
+</html>
